@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경북예술고등학교 학생 커뮤니티</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="school-logo">
+                <h1 class="visually-hidden">경북예술고등학교 온팔레트 커뮤니티</h1>
+                <img src="assets/onpalette-logo.png" alt="OnPalette Gyungbuk Art Highschool 로고" class="logo-image">
+                <p class="school-subtitle">Gyeongbuk Arts High School</p>
+            </div>
+            <p class="subtitle">학생들의 자유로운 의견 교환 공간</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 학교 지도 -->
+        <div class="school-map-container">
+            <h3 class="map-title">🏫 학교 지도</h3>
+            <div class="school-map">
+                <svg viewBox="0 0 400 300" class="map-svg">
+                    <!-- 전체 배경 -->
+                    <rect x="0" y="0" width="400" height="300" fill="transparent" stroke="#e8e8e8" stroke-width="1" rx="0"/>
+                    
+                    <!-- 미술과 영역 -->
+                    <rect x="50" y="50" width="100" height="80" 
+                          fill="#1a1a1a" 
+                          fill-opacity="0.05" 
+                          stroke="#1a1a1a" 
+                          stroke-width="1"
+                          class="map-area art-area"
+                          onclick="switchDepartment('art')"
+                          data-department="art"/>
+                    <text x="100" y="95" text-anchor="middle" font-size="16" font-weight="400" fill="#666">🎨</text>
+                    <text x="100" y="115" text-anchor="middle" font-size="11" font-weight="400" fill="#666">미술과</text>
+                    
+                    <!-- 음악과 영역 -->
+                    <rect x="250" y="50" width="100" height="80" 
+                          fill="#1a1a1a" 
+                          fill-opacity="0.05" 
+                          stroke="#1a1a1a" 
+                          stroke-width="1"
+                          class="map-area music-area"
+                          onclick="switchDepartment('music')"
+                          data-department="music"/>
+                    <text x="300" y="95" text-anchor="middle" font-size="16" font-weight="400" fill="#666">🎵</text>
+                    <text x="300" y="115" text-anchor="middle" font-size="11" font-weight="400" fill="#666">음악과</text>
+                    
+                    <!-- 무용과 영역 -->
+                    <rect x="150" y="170" width="100" height="80" 
+                          fill="#1a1a1a" 
+                          fill-opacity="0.05" 
+                          stroke="#1a1a1a" 
+                          stroke-width="1"
+                          class="map-area dance-area"
+                          onclick="switchDepartment('dance')"
+                          data-department="dance"/>
+                    <text x="200" y="215" text-anchor="middle" font-size="16" font-weight="400" fill="#666">💃</text>
+                    <text x="200" y="235" text-anchor="middle" font-size="11" font-weight="400" fill="#666">무용과</text>
+                    
+                    <!-- 중앙 공간 (전체) -->
+                    <circle cx="200" cy="150" r="30" 
+                            fill="#1a1a1a" 
+                            fill-opacity="0.03" 
+                            stroke="#1a1a1a" 
+                            stroke-width="1"
+                            stroke-dasharray="3,3"
+                            class="map-area all-area"
+                            onclick="switchDepartment('all')"
+                            data-department="all"/>
+                    <text x="200" y="155" text-anchor="middle" font-size="14" font-weight="400" fill="#999">🌟</text>
+                    <text x="200" y="170" text-anchor="middle" font-size="9" font-weight="400" fill="#999">전체</text>
+                </svg>
+            </div>
+            <p class="map-hint">지도에서 각 과를 클릭하면 해당 커뮤니티로 이동합니다</p>
+        </div>
+
+        <!-- 과별 탭 메뉴 -->
+        <div class="department-tabs">
+            <button class="tab-btn active" onclick="switchDepartment('all')" data-department="all">
+                🌟 전체
+            </button>
+            <button class="tab-btn" onclick="switchDepartment('art')" data-department="art">
+                🎨 미술과
+            </button>
+            <button class="tab-btn" onclick="switchDepartment('music')" data-department="music">
+                🎵 음악과
+            </button>
+            <button class="tab-btn" onclick="switchDepartment('dance')" data-department="dance">
+                💃 무용과
+            </button>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" onclick="showCreateForm()">✏️ 새 게시글 작성</button>
+        </div>
+
+        <!-- 게시글 작성 폼 -->
+        <div id="createForm" class="create-form hidden">
+            <h2>새 게시글 작성</h2>
+            <form onsubmit="createPost(event)">
+                <div class="form-group">
+                    <label for="postDepartment">과 선택</label>
+                    <select id="postDepartment" required class="form-select">
+                        <option value="all">🌟 전체</option>
+                        <option value="art">🎨 미술과</option>
+                        <option value="music">🎵 음악과</option>
+                        <option value="dance">💃 무용과</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>작성자 설정</label>
+                    <div class="author-type-selector">
+                        <label class="radio-label">
+                            <input type="radio" name="authorType" value="named" checked onchange="toggleAuthorInput()">
+                            <span>실명</span>
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="authorType" value="anonymous" onchange="toggleAuthorInput()">
+                            <span>익명</span>
+                        </label>
+                    </div>
+                    <input type="text" id="authorName" required placeholder="예: 2학년 3반 15번 또는 홍길동">
+                </div>
+                <div class="form-group">
+                    <label for="postTitle">제목</label>
+                    <input type="text" id="postTitle" required placeholder="제목을 입력하세요">
+                </div>
+                <div class="form-group">
+                    <label for="postContent">내용</label>
+                    <textarea id="postContent" required rows="5" placeholder="의견을 자유롭게 작성해주세요"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">작성하기</button>
+                    <button type="button" class="btn btn-secondary" onclick="hideCreateForm()">취소</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 게시글 목록 -->
+        <div id="postsContainer" class="posts-container">
+            <!-- 게시글들이 여기에 동적으로 추가됩니다 -->
+        </div>
+
+        <!-- 게시글이 없을 때 표시 -->
+        <div id="emptyState" class="empty-state">
+            <div class="empty-icon">🎭</div>
+            <p>아직 게시글이 없습니다.</p>
+            <p id="emptyStateMessage">경북예술고 학생들의 첫 번째 이야기를 시작해보세요!</p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
